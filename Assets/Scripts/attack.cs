@@ -37,6 +37,7 @@ public class attack : MonoBehaviour
         attackType = 0;
         attackCollider.isTrigger = true;
 
+
     }
 
     float dashInitialDir;

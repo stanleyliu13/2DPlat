@@ -18,7 +18,7 @@ public class SFX : MonoBehaviour
     {
         
         if(Input.GetKeyDown(KeyCode.G) && !source.isPlaying){
-            source.PlayOneShot(clip);
+            //source.PlayOneShot(clip);
         }
         
     }

@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/BaseLevel.unity
+    guid: 4939e1ebdfa657e4d99f97e929462361
+  - enabled: 1
+    path: Assets/Scenes/SwordMasterLevel.unity
+    guid: 813e327178e77154b97213e76365caf4
+  - enabled: 1
+    path: Assets/Scenes/ShapeShifterLevel.unity
+    guid: cf4631e13b9cdbd48902e410c7eb4033
   m_configObjects: {}

@@ -167,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
     bool firstFrameStartDash = false;
     void Update()
     {
-
+        Time.timeScale = 1f;
         //Debug.Log("ParryBDUR : " + parrybdur);
 
         callAllgrndIrrel();

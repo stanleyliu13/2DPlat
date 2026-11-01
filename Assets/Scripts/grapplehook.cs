@@ -1,11 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Burst.CompilerServices;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class grapplehook : MonoBehaviour
 {
@@ -469,7 +463,7 @@ public class grapplehook : MonoBehaviour
         {
             arrlist.Add(collision.attachedRigidbody.gameObject);
             arrlist[arrlist.Count-1].GetComponent<SpriteRenderer>().material.color = new Color(0.75f, 0f, 0f);
-
+            
         }
     }
 

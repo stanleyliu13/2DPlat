@@ -147,6 +147,8 @@ public class PlayerEnergyControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.G))
         {
+
+            energy -= 20f;
             findz.MoveBufferTimer = 0.1f;
 
 

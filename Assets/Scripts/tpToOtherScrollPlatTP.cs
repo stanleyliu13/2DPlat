@@ -23,11 +23,9 @@ public class tpToOtherScrollPlatTP : MonoBehaviour
     {
         Scene activeScene = SceneManager.GetActiveScene();
 
-        // 2. Create a list to hold the root objects
         List<GameObject> rootObjects = new List<GameObject>();
         activeScene.GetRootGameObjects(rootObjects);
 
-        // 3. Loop through root objects and their hierarchies
 
         float xShift = 0f;
         if(this.gameObject.name == "TPLeft")

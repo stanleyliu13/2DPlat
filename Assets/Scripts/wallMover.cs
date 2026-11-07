@@ -9,6 +9,7 @@ public class wallMover : MonoBehaviour
     public int vertDirMove;
     public int horizDirMove;
 
+    float timerSinceAlive = 0f;
 
     public float heightScale = 1f;
     public float widthScale = 1f;
@@ -18,15 +19,21 @@ public class wallMover : MonoBehaviour
     private void Start()
     {
         coll = GetComponent<BoxCollider2D>();
+        timerSinceAlive = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-
-            if(vertDirMove != 0)transform.localScale = new Vector3(300 * widthScale, 60 * heightScale, 1);
+            timerSinceAlive += Time.deltaTime;
+        if (vertDirMove != 0)transform.localScale = new Vector3(300 * widthScale, 60 * heightScale, 1);
             if(horizDirMove !=0)transform.localScale = new Vector3(60 * widthScale, 300 * heightScale, 1);
+
+            if(timerSinceAlive > 6f)
+            {
+                Destroy(this.gameObject);
+        }
     }
 
     private void FixedUpdate()

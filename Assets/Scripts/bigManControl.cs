@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ public class bigManControl : MonoBehaviour
 
     float scale = 5;
 
+
+    UniHpManager hpManager;
     int dirX;
     int dirY;
 
@@ -44,6 +47,8 @@ public class bigManControl : MonoBehaviour
         player = FindObjectOfType<PlayerMovement>();
         anim = GetComponent<Animator>();
         trans = GetComponent<Transform>();
+
+        hpManager = GetComponent<UniHpManager>();
 
         trans .localScale = new Vector3(scale, scale, 1);
     }
@@ -95,6 +100,10 @@ public class bigManControl : MonoBehaviour
             {
                 gunTransform();
             }
+            if(atknum == 5)
+            {
+                theClimb();
+            }
 
         }
 
@@ -107,11 +116,11 @@ public class bigManControl : MonoBehaviour
 
             int mostRecAtknum = atknum;
 
-            atknum = UnityEngine.Random.Range(1, 5);
+            atknum = UnityEngine.Random.Range(1, 6);
 
             while(atknum == mostRecAtknum)
             {
-                atknum = UnityEngine.Random.Range(1, 5);
+                atknum = UnityEngine.Random.Range(1, 6);
             }
 
 
@@ -142,7 +151,8 @@ public class bigManControl : MonoBehaviour
                 {
                     atknum = 1;
                 }
-            }
+           }
+
 
             lastatkended = false;
         }
@@ -260,7 +270,7 @@ public class bigManControl : MonoBehaviour
             Vector2 pos = new Vector2(0, 0);
             if(horizDirOfWall != 0)
             {
-                pos = new Vector2(150f * -horizDirOfWall + player.transform.position.x, UnityEngine.Random.Range(-1, 1) * 25f + player.transform.position.x);
+                pos = new Vector2(150f * -horizDirOfWall + player.transform.position.x, UnityEngine.Random.Range(-1, 1) * 25f + player.transform.position.y);
             }
 
             if (vertDirOfWall != 0)
@@ -425,7 +435,7 @@ public class bigManControl : MonoBehaviour
     float transformWaitTimer = 0.7f;
 
     float gunTransformTimer = 8f;
-    float rotSpeed = 80f;
+    float rotSpeed = 10f;
 
     float gunShootCD = 0.03f;
     float quadraCD = 0.1f;
@@ -446,7 +456,7 @@ public class bigManControl : MonoBehaviour
         Vector2 directionToPlayer = new Vector2(-(player.rb.position.y - rb.position.y), (player.rb.position.x - rb.position.x)).normalized;
 
 
-        rotSpeed += 10f * Time.deltaTime;
+        rotSpeed += 30f * Time.deltaTime;
 
         rotSpeed = Mathf.Clamp(rotSpeed, 40f, 360f);    
 
@@ -507,11 +517,98 @@ public class bigManControl : MonoBehaviour
             transformWaitTimer = 0.7f;
             gunTransformTimer = 8f;
             lastatkended = true;
-            rotSpeed = 80f;
+            rotSpeed = 10f;
             transform.rotation = Quaternion.Euler(0, 0, 0);
             gunTransformed = false;
         }
     }
+    float climbtimer = 3f;
+    float climbspeed = 70f;
+    void theClimb()
+    {
+        if (climbtimer > 0f)
+        {
+            rb.velocity = new Vector2(0f, climbspeed);
+        }
+        climbspeed += 25f * Time.deltaTime;
+        climbtimer -= Time.deltaTime;
+
+        if (climbtimer  < 0)
+        {
+            rb.velocity = new Vector2(0f, 0f);
+        }
+
+
+        if (wallSummonCD < 0)
+        {
+            int horizDirOfWall;
+            int vertDirOfWall;
+            if (UnityEngine.Random.Range(0f, 1f) >= 0.3f)
+            {
+                vertDirOfWall = 0;
+                if (UnityEngine.Random.Range(0f, 1f) >= 0.5f)
+                {
+                    horizDirOfWall = 1;
+                }
+                else
+                {
+                    horizDirOfWall = -1;
+                }
+
+            }
+            else
+            {
+                horizDirOfWall = 0;
+                if (UnityEngine.Random.Range(0f, 1f) >= 0.5f)
+                {
+                    vertDirOfWall = 1;
+                }
+                else
+                {
+                    vertDirOfWall = -1;
+                }
+            }
+            Vector2 pos = new Vector2(0, 0);
+            if (horizDirOfWall != 0)
+            {
+                pos = new Vector2(150f * -horizDirOfWall + player.transform.position.x, UnityEngine.Random.Range(-1, 1) * 25f + player.transform.position.y);
+            }
+
+            if (vertDirOfWall != 0)
+            {
+                pos = new Vector2(UnityEngine.Random.Range(-1, 1) * 25f + player.transform.position.x, 100f * -vertDirOfWall + player.transform.position.y);
+            }
+
+
+            wallSummonCD = 0.3f;
+
+            wallMover wMove = Instantiate(wall, pos, Quaternion.identity).GetComponent<wallMover>();
+
+            wMove.horizDirMove = horizDirOfWall;
+            wMove.vertDirMove = vertDirOfWall;
+            wMove.speed = UnityEngine.Random.Range(1f, 2f) * 100f;
+
+            wMove.widthScale = 1;
+            wMove.heightScale = 1;
+
+            if (vertDirOfWall != 0) wMove.widthScale = UnityEngine.Random.Range(0.5f, 0.75f);
+            if (horizDirOfWall != 0) wMove.heightScale = UnityEngine.Random.Range(0.5f, 0.75f);
+
+            //Debug.Log(wMove.heightScale);
+        }
+        wallSummonCD -= Time.deltaTime;
+
+        if (hpManager.timeSinceLastDamage < 0.5f && climbtimer < 0)
+        {
+            climbtimer = 3f;
+            lastatkended = true;
+            climbspeed = 70f;
+        }
+
+    }
+
+
+
 
     float angle = 0f;
 
@@ -548,6 +645,8 @@ public class bigManControl : MonoBehaviour
         p4.accelrate = accelrate;
         */
     }
+
+
     
 
     [SerializeField] private LayerMask ground;

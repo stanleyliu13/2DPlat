@@ -21,7 +21,7 @@ public class dcoll : MonoBehaviour
 
     public bool parrying = false;
 
-    float parrytimer = 0.3f;
+    float parrytimer = 0.4f;
 
    
 
@@ -50,7 +50,7 @@ public class dcoll : MonoBehaviour
         findz = FindObjectOfType<PlayerMovement>();
 
         coll.isTrigger = true;
-        initparryflourishtimer = 0.3f;
+        initparryflourishtimer = 0.4f;
     }
     private void Update()
     {
@@ -66,7 +66,8 @@ public class dcoll : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             parrying = true;
-            parrytimer = 0.3f;
+            parryFlourishing = false;
+            parrytimer = 0.4f;
 
             for (int i = 0; i < numTimesParriedInLast; i++) {
                 parrytimer *= 1f/3f;
@@ -75,11 +76,13 @@ public class dcoll : MonoBehaviour
             numTimesParriedInLast++;
 
         }
-        
+        Debug.Log( "Parrying : " + parrying);
+        Debug.Log("Flourishing : " + parryFlourishing);
+        Debug.Log("NumTimes : " + numTimesParriedInLast);
 
         
 
-        if(parrytimer < 0)
+        if (parrytimer < 0)
         {
             parrying = false;
             numTimesParriedInLast = 0;
@@ -144,7 +147,7 @@ public class dcoll : MonoBehaviour
             
             source.PlayOneShot(parrySound);
 
-            findz.parrybdur = initparryflourishtimer * 0.6f;
+            findz.parrybdur = initparryflourishtimer * 0.5f;
             findz.dirParriedFrom = -1 * (int)Mathf.Sign(xposDamage - rb.position.x);
             if (findz.isGrounded) findz.dirForParryKbVert = 0;
             if (!findz.isGrounded) findz.dirForParryKbVert = 1;
@@ -157,6 +160,39 @@ public class dcoll : MonoBehaviour
             coll.isTrigger = true;
             return;
         }
+
+        if (parryFlourishing)
+        {
+            if (parryFlourishCD >= 0)
+            {
+                return;
+            }
+            else
+            {
+                parryFlourishCD = initParryFlourishCD;
+                if(parryFlourishCD < - 2*initParryFlourishCD)source.PlayOneShot(parrySound);
+
+                findz.parrybdur = initparryflourishtimer * 0.5f;
+                findz.dirParriedFrom = -1 * (int)Mathf.Sign(xposDamage - rb.position.x);
+
+                if (findz.isGrounded) findz.dirForParryKbVert = 0;
+                if (!findz.isGrounded) findz.dirForParryKbVert = 1;
+
+                if (findz.dirParriedFrom == 0)
+                {
+                    findz.dirParriedFrom = UnityEngine.Random.Range(0, 2) * 2 - 1;
+                }
+
+                parrying = false;
+                parryFlourishing = true;
+                parryFlourishTimer = initparryflourishtimer;
+
+                coll.isTrigger = true;
+            }
+            return;
+        }
+
+
 
         if (cd <= 0 && findz.dashing == false && !parryFlourishing)
         {
@@ -180,7 +216,7 @@ public class dcoll : MonoBehaviour
         }
     }
 
-    static float initParryFlourishCD = 0.5f;
+    static float initParryFlourishCD = 0.05f;
 
     float parryFlourishCD = initParryFlourishCD;
 
@@ -192,45 +228,13 @@ public class dcoll : MonoBehaviour
         if ((collision.gameObject.CompareTag("Projectile") || collision.gameObject.CompareTag("Monster")) || collision.GetComponent<Collider2D>().tag.Equals("DoubleDamage") || collision.gameObject.CompareTag("EnemyAttackNoEnergy"))
         {
 
-            //Debug.Log("Detected ");
-            if (parryFlourishing)
-            {
-                if(parryFlourishCD >= 0)
-                {
-                    return;
-                }
-                else
-                {
-                    parryFlourishCD = initParryFlourishCD;
-                    source.PlayOneShot(parrySound);
-
-                    findz.parrybdur = initparryflourishtimer * 0.6f;
-                    findz.dirParriedFrom = -1 * (int)Mathf.Sign(collision.gameObject.GetComponent<Transform>().position.x - rb.position.x);
-
-                    if (findz.isGrounded) findz.dirForParryKbVert = 0;
-                    if (!findz.isGrounded) findz.dirForParryKbVert = 1;
-
-                    if (findz.dirParriedFrom == 0)
-                    {
-                        findz.dirParriedFrom = UnityEngine.Random.Range(0, 2) * 2 - 1;
-                    }
-
-                    parrying = false;
-                    parryFlourishing = true;
-                    parryFlourishTimer = initparryflourishtimer;
-
-                    coll.isTrigger = true;
-                }
-                return;
-            }
-
 
             if (parrying)
 
             {
                 source.PlayOneShot(parrySound);
 
-                findz.parrybdur = initparryflourishtimer * 0.6f;
+                findz.parrybdur = initparryflourishtimer * 0.5f;
                 findz.dirParriedFrom = -1 * (int)Mathf.Sign(collision.gameObject.GetComponent<Transform>().position.x - rb.position.x);
 
                 if (findz.isGrounded) findz.dirForParryKbVert = 0;
@@ -252,6 +256,39 @@ public class dcoll : MonoBehaviour
 
                 return;
             }
+            //Debug.Log("Detected ");
+            if (parryFlourishing)
+            {
+                if(parryFlourishCD >= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    parryFlourishCD = initParryFlourishCD;
+                    if (parryFlourishCD < -2*initParryFlourishCD) source.PlayOneShot(parrySound);
+
+                    findz.parrybdur = initparryflourishtimer * 0.5f;
+                    findz.dirParriedFrom = -1 * (int)Mathf.Sign(collision.gameObject.GetComponent<Transform>().position.x - rb.position.x);
+
+                    if (findz.isGrounded) findz.dirForParryKbVert = 0;
+                    if (!findz.isGrounded) findz.dirForParryKbVert = 1;
+
+                    if (findz.dirParriedFrom == 0)
+                    {
+                        findz.dirParriedFrom = UnityEngine.Random.Range(0, 2) * 2 - 1;
+                    }
+
+                    parrying = false;
+                    parryFlourishing = true;
+                    parryFlourishTimer = initparryflourishtimer;
+
+                    coll.isTrigger = true;
+                }
+                return;
+            }
+
+
 
 
 
@@ -290,63 +327,6 @@ public class dcoll : MonoBehaviour
 
 
 
-        }
-
-        if(collision.GetComponent<Collider2D>().tag.Equals("DoubleDamage"))
-        {
-            /*
-            if (parrying)
-
-            {
-                source.PlayOneShot(parrySound);
-
-                parryFlourishCD = 0.5f;
-
-                findz.parrybdur = initparryflourishtimer / 2;
-                findz.dirParriedFrom = -1 * (int)Mathf.Sign(collision.gameObject.GetComponent<Transform>().position.x - rb.position.x);
-                if (findz.isGrounded) findz.dirForParryKbVert = 0;
-                if (!findz.isGrounded) findz.dirForParryKbVert = 1;
-
-                if (findz.dirParriedFrom == 0)
-                {
-                    findz.dirParriedFrom = UnityEngine.Random.Range(0,2) * 2 -1;
-                }
-                Debug.Log(findz.dirParriedFrom);
-
-                parrying = false;
-                parryFlourishing = true;
-                parryFlourishTimer = initparryflourishtimer;
-
-                coll.isTrigger = true;
-
-                return;
-            }
-            
-
-
-
-
-            if (cd <= 0)
-            {
-                source.PlayOneShot(clip);
-
-                cd = cdtimer;
-                hp-=2;
-                if (collision.gameObject.transform.position.x > rb.position.x)
-                {
-                    findz.beinghit = true;
-                    findz.dirhitfrom = -1;
-                    findz.hittimer = 300 / 80 / 7.5f;
-
-                }
-                else
-                {
-                    findz.beinghit = true;
-                    findz.dirhitfrom = 1;
-                    findz.hittimer = 300 / 80 / 7.5f;
-                }
-            }
-            */
         }
 
 

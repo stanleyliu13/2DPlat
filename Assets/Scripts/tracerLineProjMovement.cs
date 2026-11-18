@@ -130,8 +130,8 @@ public class tracerLineProjMovement : MonoBehaviour
         {
             if (pz.collider.gameObject.CompareTag("Player") && pz.collider.gameObject.GetComponentInChildren<dcoll>() != null)
             {
-                pz.collider.gameObject.GetComponentInChildren<dcoll>().manualTakeDamage(transform.position.x, 1);
-                Destroy(this.gameObject);
+                //pz.collider.gameObject.GetComponentInChildren<dcoll>().manualTakeDamage(transform.position.x, 1);
+                //Destroy(this.gameObject);
             }
         }
     }

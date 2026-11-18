@@ -340,11 +340,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (ljumping)
         {
-            rb.velocity = new Vector2(3.5f * movespeed, 6 * jumpforce * 25 / 18);
+            rb.velocity = new Vector2(6 * movespeed, 6 * jumpforce * 25 / 18);
         }
         if (rjumping)
         {
-            rb.velocity = new Vector2(3.5f*-movespeed, 6 * jumpforce * 25/18);
+            rb.velocity = new Vector2(6f*-movespeed, 6 * jumpforce * 25/18);
         }
 
 
@@ -394,6 +394,9 @@ public class PlayerMovement : MonoBehaviour
 
             }
         }
+
+
+
 
 
 

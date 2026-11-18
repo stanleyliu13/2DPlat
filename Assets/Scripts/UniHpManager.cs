@@ -13,11 +13,11 @@ public class UniHpManager : MonoBehaviour
     {
         if(GetComponent<bossmover>() != null)
         {
-            hp = 5;
+            hp = 30;
         }
         if (GetComponent<wizkingmovement>() != null)
         {
-            hp = 5;
+            hp = 30;
         }
         if (GetComponent<monkeyman>() != null)
         {
@@ -26,13 +26,13 @@ public class UniHpManager : MonoBehaviour
 
         if(GetComponent<SwordMasterMovement>()!= null)
         {
-            hp = 15;
+            hp = 30;
         }
 
 
         if (GetComponent<bigManControl>() != null)
         {
-            hp = 10;
+            hp = 30;
         }
 
         if(gameObject.name == "Circle")

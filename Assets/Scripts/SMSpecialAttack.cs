@@ -189,7 +189,7 @@ public class SMSpecialAttack : MonoBehaviour
                 proj.GetComponent<BoxCollider2D>().enabled = false;
                 proj.GetComponent<tracerLineProjMovement>().begin = true;
                 proj.GetComponent<tracerLineProjMovement>().waitTimer = wtimer;
-                proj.GetComponent<tracerLineProjMovement>().speed = (proj.transform.position - findZ.transform.position).magnitude / wtimer;
+                proj.GetComponent<tracerLineProjMovement>().speed = (proj.transform.position - findZ.transform.position).magnitude / wtimer / 3;
                 proj.GetComponent<tracerLineProjMovement>().accel = 40;
                 dex++;
 

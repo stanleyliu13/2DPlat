@@ -257,7 +257,7 @@ public class SwordMasterMovement : MonoBehaviour
 
                 
 
-                if(GetComponent<UniHpManager>().hp < 10 && !specialAttackBegan)
+                if(GetComponent<UniHpManager>().hp < 100 && !specialAttackBegan)
                 {
                     val = 0;
                     GetComponent<SMSpecialAttack>().beginAttack = true;

@@ -145,7 +145,7 @@ public class PlayerEnergyControl : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) && energy > 20f)
         {
 
             energy -= 20f;

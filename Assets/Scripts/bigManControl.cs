@@ -437,7 +437,7 @@ public class bigManControl : MonoBehaviour
     float gunTransformTimer = 8f;
     float rotSpeed = 10f;
 
-    float gunShootCD = 0.03f;
+    float gunShootCD = 0.3f;
     float quadraCD = 0.1f;
     bool gunTransformed = false;
     float fourGapCD = 1.5f;
@@ -479,7 +479,7 @@ public class bigManControl : MonoBehaviour
             proj.GetComponent<tracerLineProjMovement>().waitTimer = 0.01f;
             projList.Add(proj.GetComponent<tracerLineProjMovement>());
 
-            gunShootCD = 0.03f;
+            gunShootCD = 0.3f;
 
 
 
@@ -522,7 +522,7 @@ public class bigManControl : MonoBehaviour
             gunTransformed = false;
         }
     }
-    float climbtimer = 3f;
+    float climbtimer = 1f;
     float climbspeed = 70f;
     void theClimb()
     {
@@ -580,7 +580,7 @@ public class bigManControl : MonoBehaviour
             }
 
 
-            wallSummonCD = 0.3f;
+            wallSummonCD = 0.5f;
 
             wallMover wMove = Instantiate(wall, pos, Quaternion.identity).GetComponent<wallMover>();
 
@@ -600,7 +600,7 @@ public class bigManControl : MonoBehaviour
 
         if (hpManager.timeSinceLastDamage < 0.5f && climbtimer < 0)
         {
-            climbtimer = 3f;
+            climbtimer = 1f;
             lastatkended = true;
             climbspeed = 70f;
         }

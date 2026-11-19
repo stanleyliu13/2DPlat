@@ -76,9 +76,7 @@ public class dcoll : MonoBehaviour
             numTimesParriedInLast++;
 
         }
-        Debug.Log( "Parrying : " + parrying);
-        Debug.Log("Flourishing : " + parryFlourishing);
-        Debug.Log("NumTimes : " + numTimesParriedInLast);
+
 
         
 

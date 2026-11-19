@@ -9,8 +9,14 @@ public class UniHpManager : MonoBehaviour
     public int hp = 5;
     public Boolean tookdamage = false;
     public float timeSinceLastDamage = 0f;
+
+    SpriteRenderer spriteRenderer;
     void Start()
     {
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        timeSinceLastDamage = 1f;
         if(GetComponent<bossmover>() != null)
         {
             hp = 30;
@@ -50,5 +56,16 @@ public class UniHpManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         timeSinceLastDamage += Time.deltaTime;
+
+        if (timeSinceLastDamage > 0f && timeSinceLastDamage < 0.175f)
+        {
+                spriteRenderer.material.color = new Color(255f, 255f, 255f);
+        }
+        else
+        {
+            spriteRenderer.material.color = new Color(1f, 1f, 1f);
+        }
+
+        
     }
 }

@@ -12,8 +12,10 @@ public class attack : MonoBehaviour
 
     public Boolean attackbegan = false;
 
+    [SerializeField] AudioClip swordSwing;
 
 
+    AudioSource source; 
     public Boolean CameInContact = false;
     BoxCollider2D attackCollider;
 
@@ -37,7 +39,7 @@ public class attack : MonoBehaviour
         attackType = 0;
         attackCollider.isTrigger = true;
 
-
+        source = GetComponent<AudioSource>();
     }
 
     float dashInitialDir;
@@ -75,6 +77,7 @@ public class attack : MonoBehaviour
             }
             else
             {
+                source.PlayOneShot(swordSwing);
                 transform.localPosition = new Vector2(0, 10 * playerstartdirY);
                 attackType = 1;
             }
@@ -236,6 +239,7 @@ public class attack : MonoBehaviour
                     collision.gameObject.GetComponent<UniHpManager>().hp--;
                     collision.gameObject.GetComponent<UniHpManager>().tookdamage = true;
                     collision.gameObject.GetComponent<UniHpManager>().timeSinceLastDamage = 0f;
+                    source.PlayOneShot(source.clip);
                 }
             }
             Findz.atkkbdur = 0.2f;
